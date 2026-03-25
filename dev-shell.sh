@@ -36,6 +36,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+export SVT_DEV_SHELL=1
 echo -ne "\033]0;dev-shell: $SVT_SECRET_PROJECT\007"  # Set window title
 print_fancy "*** Dev shell ready ***"
 print_fancy "Project: $SVT_SECRET_PROJECT"
