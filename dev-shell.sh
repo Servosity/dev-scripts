@@ -1,5 +1,9 @@
 #!/bin/bash
 
+print_fancy(){
+    echo -e "\033[1;92m${1}\033[0m"
+}
+
 if ! command -v aws &> /dev/null; then
     echo "Error: aws CLI is not available on PATH." >&2
     exit 1
@@ -20,6 +24,7 @@ if [ -z "$SVT_SECRET_PROJECT" ]; then
     exit 1
 fi
 
+echo "Fetching secrets..."
 secret_json=$(aws secretsmanager get-secret-value \
     --secret-id "$SVT_SECRET_ENV_NAME/$SVT_SECRET_PROJECT/env" \
     --query SecretString \
@@ -32,10 +37,10 @@ if [ $? -ne 0 ]; then
 fi
 
 echo -ne "\033]0;dev-shell: $SVT_SECRET_PROJECT\007"  # Set window title
-echo "*** Dev shell ready ***"
-echo "Project: $SVT_SECRET_PROJECT"
-echo "Secret: $SVT_SECRET_ENV_NAME"
+print_fancy "*** Dev shell ready ***"
+print_fancy "Project: $SVT_SECRET_PROJECT"
+print_fancy "Secret: $SVT_SECRET_ENV_NAME"
 echo
 echo "$secret_json" | json-env-helper -- bash
 echo -ne "\033]0;\007"  # Clear window title, letting the terminal revert to default
-echo "*** Dev shell exited ***"
+print_fancy "*** Dev shell exited ***"
