@@ -42,6 +42,10 @@ print_fancy "*** Dev shell ready ***"
 print_fancy "Project: $SVT_SECRET_PROJECT"
 print_fancy "Secret: $SVT_SECRET_ENV_NAME"
 echo
-echo "$secret_json" | json-env-helper -- bash
+if [ $# -eq 0 ]; then
+    echo "$secret_json" | json-env-helper -- bash
+else
+    echo "$secret_json" | json-env-helper -- "$@"
+fi
 echo -ne "\033]0;\007"  # Clear window title, letting the terminal revert to default
 print_fancy "*** Dev shell exited ***"
