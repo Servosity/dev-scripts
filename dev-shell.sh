@@ -47,5 +47,7 @@ if [ $# -eq 0 ]; then
 else
     echo "$secret_json" | json-env-helper -- "$@"
 fi
+cmd_exit=$?
 echo -ne "\033]0;\007"  # Clear window title, letting the terminal revert to default
 print_fancy "*** Dev shell exited ***"
+exit $cmd_exit
